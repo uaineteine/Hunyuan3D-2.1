@@ -1,0 +1,4 @@
+--extra-index-url https://download.blender.org/pypi/
+
+# Blender
+bpy==4.0

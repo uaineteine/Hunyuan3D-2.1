@@ -62,6 +62,9 @@ RUN git clone https://github.com/Tencent-Hunyuan/Hunyuan3D-2.1.git
 
 # Install Python dependencies from modified requirements.txt
 RUN pip install -r Hunyuan3D-2.1/requirements.txt
+RUN pip install -r Hunyuan3D-2.1/requirements_blender.txt
+RUN pip install -r Hunyuan3D-2.1/requirements_buid_tools.txt
+RUN pip install -r Hunyuan3D-2.1/requirements_utils.txt
 
 # Install custom_rasterizer
 RUN cd /workspace/Hunyuan3D-2.1/hy3dpaint/custom_rasterizer && \
