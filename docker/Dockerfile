@@ -63,7 +63,7 @@ RUN git clone -b KDNLO-81-adapt-package-versions-for-install https://github.com/
 # Install Python dependencies from modified requirements.txt
 RUN pip install -r Hunyuan3D-2.1/requirements.txt
 RUN pip install -r Hunyuan3D-2.1/requirements_blender.txt
-RUN pip install -r Hunyuan3D-2.1/requirements_buid_tools.txt
+RUN pip install -r Hunyuan3D-2.1/requirements_build_tools.txt
 RUN pip install -r Hunyuan3D-2.1/requirements_utils.txt
 
 # Install custom_rasterizer
