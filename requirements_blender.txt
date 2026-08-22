@@ -2,3 +2,10 @@
 
 # Blender
 bpy==4.0
+
+# 3D Mesh Processing
+trimesh==4.4.9
+pymeshlab==2022.2.post3
+pygltflib==1.16.3
+xatlas==0.0.9
+open3d==0.19.0

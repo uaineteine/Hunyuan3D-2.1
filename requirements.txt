@@ -24,13 +24,6 @@ realesrgan==0.3.0
 tb_nightly==2.18.0a20240726
 basicsr==1.4.2
 
-# 3D Mesh Processing
-trimesh==4.4.9
-pymeshlab==2022.2.post3
-pygltflib==1.16.3
-xatlas==0.0.9
-open3d==0.19.0
-
 # Web Framework (for demo)
 gradio==5.33.2
 fastapi==0.120.4
