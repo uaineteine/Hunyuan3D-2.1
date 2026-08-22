@@ -65,6 +65,7 @@ RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_mesh.txt
 RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_build_tools.txt
 RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_utils.txt
 RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_config.txt
+RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_ml.txt
 RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_general.txt
 
 # Install custom_rasterizer
