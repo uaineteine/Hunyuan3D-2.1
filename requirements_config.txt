@@ -1,0 +1,4 @@
+# Configuration Management
+omegaconf==2.3.0
+pyyaml==6.0.3
+configargparse==1.7.5

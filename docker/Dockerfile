@@ -58,13 +58,14 @@ RUN conda install -c conda-forge libstdcxx-ng -y
 RUN pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu124
 
 # Clone Hunyuan3D-2.1 repository
-RUN git clone -b KDNLO-86-adjust-for-import-errors-on-pck-resources https://github.com/uaineteine/Hunyuan3D-2.1.git
+RUN git clone -b KDNLO-87-update-general-packages https://github.com/uaineteine/Hunyuan3D-2.1.git
 
 # Install Python dependencies from modified requirements.txt
-RUN pip install -r Hunyuan3D-2.1/requirements.txt
 RUN pip install -r Hunyuan3D-2.1/requirements_blender.txt
 RUN pip install -r Hunyuan3D-2.1/requirements_build_tools.txt
 RUN pip install -r Hunyuan3D-2.1/requirements_utils.txt
+RUN pip install -r Hunyuan3D-2.1/requirements_config.txt
+RUN pip install -r Hunyuan3D-2.1/requirements.txt
 
 # Install custom_rasterizer
 RUN cd /workspace/Hunyuan3D-2.1/hy3dpaint/custom_rasterizer && \
