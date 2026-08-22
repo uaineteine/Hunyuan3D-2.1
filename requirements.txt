@@ -40,8 +40,8 @@ uvicorn==0.35.0
 cupy-cuda12x==13.5.1
 
 # ONNX Runtime
-onnxruntime==1.16.3
-torchmetrics==1.6.0
+onnxruntime==1.18.1
+torchmetrics==1.7.4
 
 #validation
 pydantic==2.10.6
