@@ -2,9 +2,9 @@
 --extra-index-url https://mirrors.aliyun.com/pypi/simple
 
 # Core ML/Deep Learning
-transformers==4.46.3
-diffusers==0.32.2
-accelerate==1.2.1
+transformers==4.57.6
+diffusers==0.35.2
+accelerate==1.14.0
 pytorch-lightning==2.1.4
 huggingface-hub==0.30.2
 safetensors==0.4.5
