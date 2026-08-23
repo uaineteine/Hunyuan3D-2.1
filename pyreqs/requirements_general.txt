@@ -11,7 +11,7 @@ pandas==2.3.3
 opencv-python==4.10.0.84
 imageio==2.36.0
 scikit-image==0.25.2
-rembg==2.0.81
+rembg==2.0.69
 realesrgan==0.3.0
 tb_nightly==2.18.0a20240726
 basicsr==1.4.2
