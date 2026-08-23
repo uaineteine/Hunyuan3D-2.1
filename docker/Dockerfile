@@ -55,18 +55,25 @@ RUN conda install cuda -c nvidia/label/cuda-12.4.1 -y
 # Update libstdcxx-ng to fix compatibility issues (auto-confirm)
 RUN conda install -c conda-forge libstdcxx-ng -y
 
-RUN pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+# Install uv
+
+RUN pip install uv
+
+# Install torch
+
+RUN uv pip install --system torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 
 # Clone Hunyuan3D-2.1 repository
-RUN git clone -b KDNLO-87-update-general-packages https://github.com/uaineteine/Hunyuan3D-2.1.git
+RUN git clone -b KDNLO-88-use-uv-for-faster-installs https://github.com/uaineteine/Hunyuan3D-2.1.git
 
-# Install Python dependencies from modified requirements.txt
-RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_mesh.txt
-RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_build_tools.txt
-RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_utils.txt
-RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_config.txt
-RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_ml.txt
-RUN pip install -r Hunyuan3D-2.1/pyreqs/requirements_general.txt
+# Install Python dependencies with uv
+
+RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_mesh.txt
+RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_build_tools.txt
+RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_utils.txt
+RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_config.txt
+RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_ml.txt
+RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_general.txt
 
 # Install custom_rasterizer
 RUN cd /workspace/Hunyuan3D-2.1/hy3dpaint/custom_rasterizer && \
