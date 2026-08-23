@@ -57,7 +57,7 @@ RUN conda install -c conda-forge libstdcxx-ng -y
 
 # Install torch
 
-pip install --system torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+RUN pip install --system torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 
 # Clone Hunyuan3D-2.1 repository
 RUN git clone -b KDNLO-88-use-uv-for-faster-installs https://github.com/uaineteine/Hunyuan3D-2.1.git
