@@ -7,15 +7,6 @@ scipy==1.15.3
 einops==0.8.2
 pandas==2.3.3
 
-# Computer Vision & Image Processing
-opencv-python==4.10.0.84
-imageio==2.36.0
-scikit-image==0.25.2
-rembg==2.0.69
-realesrgan==0.3.0
-tb_nightly==2.18.0a20240726
-basicsr==1.4.2
-
 # Web Framework (for demo)
 gradio==5.33.2
 fastapi==0.120.4

@@ -64,12 +64,12 @@ RUN git clone -b KDNLO-88-use-uv-for-faster-installs https://github.com/uainetei
 
 # Install Python dependencies with uv
 RUN pip install uv
-RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_mesh.txt
+RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_general.txt
+RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_ml.txt
 RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_build_tools.txt
 RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_utils.txt
 RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_config.txt
-RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_ml.txt
-RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_general.txt
+RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_mesh.txt
 
 # Install custom_rasterizer
 RUN cd /workspace/Hunyuan3D-2.1/hy3dpaint/custom_rasterizer && \
