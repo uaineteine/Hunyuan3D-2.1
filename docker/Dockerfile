@@ -7,6 +7,9 @@ LABEL name="hunyuan3d21" maintainer="hunyuan3d21"
 ENV HF_HOME=/workspace/.hf_cache
 ENV TRANSFORMERS_CACHE=/workspace/.hf_cache
 
+# use rust based downloader for a faster experience in downloading models
+ENV HF_HUB_ENABLE_HF_TRANSFER=1
+
 # create workspace folder and set it as working directory
 RUN mkdir -p /workspace
 WORKDIR /workspace
