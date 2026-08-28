@@ -3,6 +3,10 @@ FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
 
 LABEL name="hunyuan3d21" maintainer="hunyuan3d21"
 
+# set cache dirs
+ENV HF_HOME=/workspace/.hf_cache
+ENV TRANSFORMERS_CACHE=/workspace/.hf_cache
+
 # create workspace folder and set it as working directory
 RUN mkdir -p /workspace
 WORKDIR /workspace
