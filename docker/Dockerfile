@@ -67,7 +67,7 @@ RUN conda install -c conda-forge libstdcxx-ng -y
 RUN pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 
 # Clone Hunyuan3D-2.1 repository
-RUN git clone -b KDNLO-92-reduce-arch-compatibility-against-older-card-arch https://github.com/uaineteine/Hunyuan3D-2.1.git
+RUN git clone -b KDNLO-92-reduce-arch-compatibility-against-older-card-archs https://github.com/uaineteine/Hunyuan3D-2.1.git
 
 # Install Python dependencies with uv
 RUN pip install uv
