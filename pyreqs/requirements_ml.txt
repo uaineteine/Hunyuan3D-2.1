@@ -6,7 +6,7 @@ transformers==5.16.1
 diffusers==0.39.0
 accelerate==1.14.0
 pytorch-lightning==2.6.5
-huggingface-hub==1.2.9
+huggingface-hub==1.29.0
 hf-transfer
 safetensors==0.8.0
 
