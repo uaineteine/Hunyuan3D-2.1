@@ -5,7 +5,7 @@ LABEL name="hunyuan3d21" maintainer="hunyuan3d21"
 
 # --- User‑configurable clone settings ---
 ARG HY_REMOTE=https://github.com/uaineteine/Hunyuan3D-2.1.git
-ARG HY_BRANCH=KDNLO-98-remove-git-history-in-clone-step
+ARG HY_BRANCH=KDNLO-102-cleanup-cuda-compile-information
 # --- User‑configurable CUDA arch list ---
 ARG HY_CUDA_ARCH="8.0;8.6;8.9;9.0"
 
@@ -132,6 +132,27 @@ RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
 RUN rm -rf "$(pip cache dir)" || true
 RUN uv cache clean --all || true
+
+# --- CUDA compiler cleanup (safe) ---
+# Remove PTX intermediate files
+RUN find / -type f -name "*.ptx" -delete || true
+# Remove CUDA static libraries (not needed at runtime)
+RUN rm -rf /usr/local/cuda/lib64/*.a || true
+# Remove CUDA debug symbol bundles
+RUN rm -rf /usr/local/cuda/lib64/*debug* || true
+# Remove leftover host object files
+RUN find /workspace -type f -name "*.o" -delete || true
+# Remove NVCC temp directories
+RUN rm -rf /tmp/* || true
+RUN rm -rf /var/tmp/* || true
+# Remove conda compiler caches
+RUN rm -rf /workspace/miniconda3/pkgs/* || true
+RUN rm -rf /workspace/miniconda3/envs/hunyuan3d21/share/* || true
+# Remove CUDA samples + docs (you already do some)
+RUN rm -rf /usr/local/cuda/samples || true
+RUN rm -rf /usr/local/cuda/doc || true
+# Remove NVCC host-side include files (safe after build)
+RUN rm -rf /usr/local/cuda/include || true
 
 # Image general reduction
 # 1. remove manuals 
