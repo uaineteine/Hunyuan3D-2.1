@@ -67,7 +67,7 @@ RUN conda install -c conda-forge libstdcxx-ng -y
 RUN pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 
 # Clone Hunyuan3D-2.1 repository
-RUN git clone -b KDNLO-95-clear-pip-cache-after-pip-installs https://github.com/uaineteine/Hunyuan3D-2.1.git
+RUN git clone -b KDNLO-99-remove-cuda-install-docs https://github.com/uaineteine/Hunyuan3D-2.1.git
 
 # Install Python dependencies with uv
 RUN pip install uv
@@ -124,6 +124,15 @@ RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/*
 RUN rm -rf "$(pip cache dir)" || true
 RUN uv cache clean --all || true
+
+# Image general reduction
+# 1. remove manuals 
+RUN rm -rf /usr/share/man/*
+# 2. remove share docs
+RUN rm -rf /usr/share/doc/*
+# 3. remove unused cuda docs and samples
+RUN rm -rf /usr/local/cuda/samples
+RUN rm -rf /usr/local/cuda/doc
 
 # Set default command
 WORKDIR /workspace/Hunyuan3D-2.1
