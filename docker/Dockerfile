@@ -5,7 +5,7 @@ LABEL name="hunyuan3d21" maintainer="hunyuan3d21"
 
 # --- User‑configurable clone settings ---
 ARG HY_REMOTE=https://github.com/uaineteine/Hunyuan3D-2.1.git
-ARG HY_BRANCH=KDNLO-102-cleanup-cuda-compile-information
+ARG HY_BRANCH=KDNLO-97-remove-the-conda-install-from-image
 # --- User‑configurable CUDA arch list ---
 ARG HY_CUDA_ARCH="8.0;8.6;8.9;9.0"
 
@@ -20,8 +20,8 @@ ENV HF_XET_HIGH_PERFORMANCE=1
 RUN mkdir -p /workspace
 WORKDIR /workspace
 
-# update package lists and install git, wget, vim, libegl1-mesa-dev, and libglib2.0-0
-RUN apt-get update && apt-get install -y build-essential git wget vim libegl1-mesa-dev libglib2.0-0 unzip git-lfs
+# update package lists and install git, wget, vim, libegl1-mesa-dev, libglib2.0-0, and python3-pip
+RUN apt-get update && apt-get install -y build-essential git wget vim libegl1-mesa-dev libglib2.0-0 unzip git-lfs python3-pip
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pkg-config libglvnd0 libgl1 libglx0 libegl1 libgles2 libglvnd-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev cmake curl mesa-utils-extra libxrender1
 
@@ -39,37 +39,7 @@ ENV PATH=${CUDA_HOME}/bin:${PATH}
 ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 ENV TORCH_CUDA_ARCH_LIST="${HY_CUDA_ARCH}"
 
-# install conda
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-    chmod +x Miniconda3-latest-Linux-x86_64.sh && \
-    ./Miniconda3-latest-Linux-x86_64.sh -b -p /workspace/miniconda3 && \
-    rm Miniconda3-latest-Linux-x86_64.sh
-
-# update PATH environment variable
-ENV PATH="/workspace/miniconda3/bin:${PATH}"
-
-# initialize conda
-RUN conda init bash
-
-# Accept Anaconda TOS for required channels
-RUN conda tos accept --channel https://repo.anaconda.com/pkgs/main && \
-    conda tos accept --channel https://repo.anaconda.com/pkgs/r
-
-# create and activate conda environment
-RUN conda create -n hunyuan3d21 python=3.10 && echo "source activate hunyuan3d21" > ~/.bashrc
-ENV PATH="/workspace/miniconda3/envs/hunyuan3d21/bin:${PATH}"
-
-# Set conda to always auto-approve
-RUN conda config --set always_yes true
-
-RUN conda install Ninja
-RUN conda install cuda -c nvidia/label/cuda-12.4.1 -y
-
-# Update libstdcxx-ng to fix compatibility issues (auto-confirm)
-RUN conda install -c conda-forge libstdcxx-ng -y
-
 # Install torch
-
 RUN pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 
 # Clone Hunyuan3D-2.1 repository
@@ -114,14 +84,7 @@ RUN cd /workspace/Hunyuan3D-2.1/hy3dpaint/utils && \
 # Set working directory to the cloned repository
 WORKDIR /workspace/Hunyuan3D-2.1
 
-# Set global library paths to ensure proper linking at runtime
-ENV LD_LIBRARY_PATH="/workspace/miniconda3/envs/hunyuan3d21/lib:${LD_LIBRARY_PATH}"
-
 RUN apt-get install -y libxi6 libgconf-2-4 libxkbcommon-x11-0 libsm6 libxext6 libxrender-dev
-
-# Activate conda environment by default
-RUN echo "conda activate hunyuan3d21" >> ~/.bashrc
-SHELL ["/bin/bash", "--login", "-c"]
 
 #exposing 7860 port
 EXPOSE 7860
@@ -145,9 +108,6 @@ RUN find /workspace -type f -name "*.o" -delete || true
 # Remove NVCC temp directories
 RUN rm -rf /tmp/* || true
 RUN rm -rf /var/tmp/* || true
-# Remove conda compiler caches
-RUN rm -rf /workspace/miniconda3/pkgs/* || true
-RUN rm -rf /workspace/miniconda3/envs/hunyuan3d21/share/* || true
 # Remove CUDA samples + docs (you already do some)
 RUN rm -rf /usr/local/cuda/samples || true
 RUN rm -rf /usr/local/cuda/doc || true
