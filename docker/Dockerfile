@@ -3,6 +3,10 @@ FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
 
 LABEL name="hunyuan3d21" maintainer="hunyuan3d21"
 
+# --- User‑configurable clone settings ---
+ARG HY_REMOTE=https://github.com/uaineteine/Hunyuan3D-2.1.git
+ARG HY_BRANCH=KDNLO-98-remove-git-history-in-clone-step
+
 # set cache dirs
 ENV HF_HOME=/workspace/.hf_cache
 ENV TRANSFORMERS_CACHE=/workspace/.hf_cache
@@ -67,7 +71,9 @@ RUN conda install -c conda-forge libstdcxx-ng -y
 RUN pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 
 # Clone Hunyuan3D-2.1 repository
-RUN git clone -b KDNLO-99-remove-cuda-install-docs https://github.com/uaineteine/Hunyuan3D-2.1.git
+RUN git clone -b "$HY_BRANCH" "$HY_REMOTE"
+# Cleanup .git folder to save space
+RUN rm -rf rm -rf Hunyuan3D-2.1/.git
 
 # Install Python dependencies with uv
 RUN pip install uv
