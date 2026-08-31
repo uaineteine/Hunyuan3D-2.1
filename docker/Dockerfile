@@ -67,7 +67,7 @@ RUN conda install -c conda-forge libstdcxx-ng -y
 RUN pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 
 # Clone Hunyuan3D-2.1 repository
-RUN git clone -b KDNLO-93-fix-remote-file-loading-issue https://github.com/uaineteine/Hunyuan3D-2.1.git
+RUN git clone -b KDNLO-95-clear-pip-cache-after-pip-installs https://github.com/uaineteine/Hunyuan3D-2.1.git
 
 # Install Python dependencies with uv
 RUN pip install uv
@@ -118,10 +118,12 @@ SHELL ["/bin/bash", "--login", "-c"]
 #exposing 7860 port
 EXPOSE 7860
 
-# Cleanup
-RUN rm -f /workspace/*.zip && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Cleanup of installs and temporary files
+RUN rm -f /workspace/*.zip
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/*
+RUN rm -rf "$(pip cache dir)" || true
+RUN uv cache clean --all || true
 
 # Set default command
 WORKDIR /workspace/Hunyuan3D-2.1
