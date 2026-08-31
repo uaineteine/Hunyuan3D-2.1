@@ -20,8 +20,8 @@ ENV HF_XET_HIGH_PERFORMANCE=1
 RUN mkdir -p /workspace
 WORKDIR /workspace
 
-# update package lists and install git, wget, vim, libegl1-mesa-dev, libglib2.0-0, and python3.10
-RUN apt-get update && apt-get install -y build-essential git wget vim libegl1-mesa-dev libglib2.0-0 unzip git-lfs python3.10 python3.10-venv python3.10-dev
+# update package lists and install git, wget, nano, libegl1-mesa-dev, libglib2.0-0, and python3.10
+RUN apt-get update && apt-get install -y build-essential git wget nano libegl1-mesa-dev libglib2.0-0 unzip git-lfs python3.10 python3.10-venv python3.10-dev
 
 # Set Python 3.10 as the default python3 and bootstrap pip
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 && \
