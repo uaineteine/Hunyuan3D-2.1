@@ -50,7 +50,7 @@ RUN pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url h
 # Clone Hunyuan3D-2.1 repository
 RUN git clone -b "$HY_BRANCH" "$HY_REMOTE"
 # Cleanup .git folder to save space
-RUN rm -rf rm -rf Hunyuan3D-2.1/.git
+RUN rm -rf Hunyuan3D-2.1/.git
 
 # Install Python dependencies with uv
 RUN pip install uv
