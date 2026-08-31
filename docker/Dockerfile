@@ -21,14 +21,15 @@ RUN mkdir -p /workspace
 WORKDIR /workspace
 
 # update package lists and install git, wget, nano, libegl1-mesa-dev, libglib2.0-0, and python3.10
-RUN apt-get update && apt-get install -y build-essential git wget nano libegl1-mesa-dev libglib2.0-0 unzip git-lfs python3.10 python3.10-venv python3.10-dev
+RUN apt-get update
+RUN apt-get install -y build-essential git wget nano libegl1-mesa-dev libglib2.0-0 unzip git-lfs python3.10 python3.10-venv python3.10-dev python3-pip
 
 # Set Python 3.10 as the default python3 and bootstrap pip
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 && \
-    python3.10 -m ensurepip --upgrade && \
-    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.10 1
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
+RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+RUN python3 -m pip --version
 
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pkg-config libglvnd0 libgl1 libglx0 libegl1 libgles2 libglvnd-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev cmake curl mesa-utils-extra libxrender1
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pkg-config libglvnd0 libgl1 libglx0 libegl1 libgles2 libglvnd-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev cmake curl mesa-utils-extra libxrender1
 
 # Install additional dependencies for compilation
 RUN apt-get install -y libeigen3-dev python3-dev python3-setuptools libcgal-dev
