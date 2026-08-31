@@ -6,6 +6,8 @@ LABEL name="hunyuan3d21" maintainer="hunyuan3d21"
 # --- User‑configurable clone settings ---
 ARG HY_REMOTE=https://github.com/uaineteine/Hunyuan3D-2.1.git
 ARG HY_BRANCH=KDNLO-98-remove-git-history-in-clone-step
+# --- User‑configurable CUDA arch list ---
+ARG HY_CUDA_ARCH="8.0;8.6;8.9;9.0"
 
 # set cache dirs
 ENV HF_HOME=/workspace/.hf_cache
@@ -35,7 +37,7 @@ ENV PYOPENGL_PLATFORM=egl
 ENV CUDA_HOME=/usr/local/cuda
 ENV PATH=${CUDA_HOME}/bin:${PATH}
 ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
-ENV TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0"
+ENV TORCH_CUDA_ARCH_LIST="${HY_CUDA_ARCH}"
 
 # install conda
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
@@ -87,7 +89,7 @@ RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_mesh.txt
 # Install custom_rasterizer
 RUN cd /workspace/Hunyuan3D-2.1/hy3dpaint/custom_rasterizer && \
     # Set compilation environment variables
-    export TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0" && \
+    export TORCH_CUDA_ARCH_LIST="${HY_CUDA_ARCH}" && \
     export CUDA_NVCC_FLAGS="-allow-unsupported-compiler" && \
     # Install with editable mode
     pip install -e . --no-build-isolation --no-deps
