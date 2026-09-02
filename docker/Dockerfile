@@ -21,15 +21,14 @@ RUN mkdir -p /workspace
 WORKDIR /workspace
 
 # update package lists and install git, wget, nano, libegl1-mesa-dev, libglib2.0-0, and python3.10
-RUN apt-get update
-RUN apt-get install -y build-essential git wget nano libegl1-mesa-dev libglib2.0-0 unzip git-lfs python3.10 python3.10-dev python3-pip
+RUN apt-get update && apt-get install -y build-essential git wget nano libegl1-mesa-dev libglib2.0-0 unzip git-lfs python3.10 python3.10-venv python3.10-dev
 
 # Set Python 3.10 as the default python3 and bootstrap pip
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
-RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
-RUN python3 -m pip --version
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 && \
+    python3.10 -m ensurepip --upgrade && \
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.10 1
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pkg-config libglvnd0 libgl1 libglx0 libegl1 libgles2 libglvnd-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev cmake curl mesa-utils-extra libxrender1
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pkg-config libglvnd0 libgl1 libglx0 libegl1 libgles2 libglvnd-dev libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev cmake curl mesa-utils-extra libxrender1
 
 # Install additional dependencies for compilation
 RUN apt-get install -y libeigen3-dev python3-dev python3-setuptools libcgal-dev
@@ -46,11 +45,7 @@ ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 ENV TORCH_CUDA_ARCH_LIST="${HY_CUDA_ARCH}"
 
 # Install torch
-RUN python3 -m pip install \
-    torch==2.6.0 \
-    torchvision==0.21.0 \
-    torchaudio==2.6.0 \
-    --index-url https://download.pytorch.org/whl/cu124
+RUN python3.10 install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 
 # Clone Hunyuan3D-2.1 repository
 RUN git clone -b "$HY_BRANCH" "$HY_REMOTE"
@@ -58,7 +53,7 @@ RUN git clone -b "$HY_BRANCH" "$HY_REMOTE"
 RUN rm -rf Hunyuan3D-2.1/.git
 
 # Install Python dependencies with uv
-RUN python3 -m pip install uv
+RUN python3.10 install uv
 RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_general.txt
 RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_ml.txt
 RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_build_tools.txt
@@ -68,9 +63,9 @@ RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_mesh.txt
 
 # Install custom_rasterizer
 RUN cd /workspace/Hunyuan3D-2.1/hy3dpaint/custom_rasterizer && \
-    TORCH_CUDA_ARCH_LIST="${HY_CUDA_ARCH}" \
-    CUDA_NVCC_FLAGS="-allow-unsupported-compiler" \
-    python3 -m pip install -e . --no-build-isolation --no-deps
+    export TORCH_CUDA_ARCH_LIST="${HY_CUDA_ARCH}" && \
+    export CUDA_NVCC_FLAGS="-allow-unsupported-compiler" && \
+    python3.10 -m pip install . --no-build-isolation --no-deps
 
 # Install DifferentiableRenderer
 RUN cd /workspace/Hunyuan3D-2.1/hy3dpaint/DifferentiableRenderer && \
@@ -94,8 +89,8 @@ WORKDIR /workspace/Hunyuan3D-2.1
 
 RUN apt-get install -y libxi6 libgconf-2-4 libxkbcommon-x11-0 libsm6 libxext6 libxrender-dev
 
-# Remove build-only Python tools after all packages and extensions are built.
-RUN python3 -m pip uninstall -y uv ninja pybind11
+#exposing 7860 port
+EXPOSE 7860
 
 # Cleanup of installs and temporary files
 RUN rm -f /workspace/*.zip
@@ -130,9 +125,6 @@ RUN rm -rf /usr/share/doc/*
 # 3. remove unused cuda docs and samples
 RUN rm -rf /usr/local/cuda/samples
 RUN rm -rf /usr/local/cuda/doc
-
-#exposing 7860 port
-EXPOSE 7860
 
 # Set default command
 WORKDIR /workspace/Hunyuan3D-2.1
