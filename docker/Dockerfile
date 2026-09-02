@@ -94,8 +94,8 @@ WORKDIR /workspace/Hunyuan3D-2.1
 
 RUN apt-get install -y libxi6 libgconf-2-4 libxkbcommon-x11-0 libsm6 libxext6 libxrender-dev
 
-#exposing 7860 port
-EXPOSE 7860
+# Remove build-only Python tools after all packages and extensions are built.
+RUN python3 -m pip uninstall -y uv ninja pybind11
 
 # Cleanup of installs and temporary files
 RUN rm -f /workspace/*.zip
@@ -130,6 +130,9 @@ RUN rm -rf /usr/share/doc/*
 # 3. remove unused cuda docs and samples
 RUN rm -rf /usr/local/cuda/samples
 RUN rm -rf /usr/local/cuda/doc
+
+#exposing 7860 port
+EXPOSE 7860
 
 # Set default command
 WORKDIR /workspace/Hunyuan3D-2.1
