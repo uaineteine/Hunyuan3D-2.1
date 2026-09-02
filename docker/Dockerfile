@@ -22,7 +22,7 @@ WORKDIR /workspace
 
 # update package lists and install git, wget, nano, libegl1-mesa-dev, libglib2.0-0, and python3.10
 RUN apt-get update
-RUN apt-get install -y build-essential git wget nano libegl1-mesa-dev libglib2.0-0 unzip git-lfs python3.10 python3.10-venv python3.10-dev python3-pip
+RUN apt-get install -y build-essential git wget nano libegl1-mesa-dev libglib2.0-0 unzip git-lfs python3.10 python3.10-dev python3-pip
 
 # Set Python 3.10 as the default python3 and bootstrap pip
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
