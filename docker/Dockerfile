@@ -46,7 +46,11 @@ ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 ENV TORCH_CUDA_ARCH_LIST="${HY_CUDA_ARCH}"
 
 # Install torch
-RUN pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+RUN python3 -m pip install \
+    torch==2.6.0 \
+    torchvision==0.21.0 \
+    torchaudio==2.6.0 \
+    --index-url https://download.pytorch.org/whl/cu124
 
 # Clone Hunyuan3D-2.1 repository
 RUN git clone -b "$HY_BRANCH" "$HY_REMOTE"
@@ -54,7 +58,7 @@ RUN git clone -b "$HY_BRANCH" "$HY_REMOTE"
 RUN rm -rf Hunyuan3D-2.1/.git
 
 # Install Python dependencies with uv
-RUN pip install uv
+RUN python3 -m pip install uv
 RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_general.txt
 RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_ml.txt
 RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_build_tools.txt
@@ -64,11 +68,9 @@ RUN uv pip install --system -r Hunyuan3D-2.1/pyreqs/requirements_mesh.txt
 
 # Install custom_rasterizer
 RUN cd /workspace/Hunyuan3D-2.1/hy3dpaint/custom_rasterizer && \
-    # Set compilation environment variables
-    export TORCH_CUDA_ARCH_LIST="${HY_CUDA_ARCH}" && \
-    export CUDA_NVCC_FLAGS="-allow-unsupported-compiler" && \
-    # Install with editable mode
-    pip install -e . --no-build-isolation --no-deps
+    TORCH_CUDA_ARCH_LIST="${HY_CUDA_ARCH}" \
+    CUDA_NVCC_FLAGS="-allow-unsupported-compiler" \
+    python3 -m pip install -e . --no-build-isolation --no-deps
 
 # Install DifferentiableRenderer
 RUN cd /workspace/Hunyuan3D-2.1/hy3dpaint/DifferentiableRenderer && \
