@@ -44,6 +44,9 @@ ENV PATH=${CUDA_HOME}/bin:${PATH}
 ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 ENV TORCH_CUDA_ARCH_LIST="${HY_CUDA_ARCH}"
 
+#update setuptools
+RUN python3.10 install --upgrade pip setuptools wheel
+
 # Install torch
 RUN python3.10 install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
 
