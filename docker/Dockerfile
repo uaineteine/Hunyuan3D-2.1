@@ -28,6 +28,10 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
 # Install additional dependencies for compilation
 RUN apt-get install -y libeigen3-dev python3-dev python3-setuptools libcgal-dev
 
+# Set Python 3.10 as the default python3 and bootstrap pip
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 && \
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3.10 1
+
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
