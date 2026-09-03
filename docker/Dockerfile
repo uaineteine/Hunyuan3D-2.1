@@ -124,6 +124,10 @@ RUN rm -rf /usr/share/doc/*
 RUN rm -rf /usr/local/cuda/samples
 RUN rm -rf /usr/local/cuda/doc
 
+#CLEANUP
+ENV PYTHONDONTWRITEBYTECODE=0
+ENV PYTHONUNBUFFERED=0
+
 # Set default command
 WORKDIR /workspace/Hunyuan3D-2.1
 RUN mkdir gradio_cache
