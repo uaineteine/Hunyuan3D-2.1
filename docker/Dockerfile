@@ -130,6 +130,7 @@ ENV PYTHONUNBUFFERED=0
 
 # Ensure `python` points to python3
 RUN ln -sf /usr/bin/python3 /usr/bin/python
+RUN ln -sf /usr/bin/pip3 /usr/bin/pip
 
 # Set default command
 WORKDIR /workspace/Hunyuan3D-2.1
