@@ -128,6 +128,9 @@ RUN rm -rf /usr/local/cuda/doc
 ENV PYTHONDONTWRITEBYTECODE=0
 ENV PYTHONUNBUFFERED=0
 
+# Ensure `python` points to python3
+RUN ln -sf /usr/bin/python3 /usr/bin/python
+
 # Set default command
 WORKDIR /workspace/Hunyuan3D-2.1
 RUN mkdir gradio_cache
